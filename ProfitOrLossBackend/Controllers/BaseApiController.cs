@@ -27,46 +27,71 @@ namespace ProfitOrLossBackend.Controllers
             return Ok(await _profitOrLossContext.FinancialYear.ToListAsync());
         }
 
-        //[HttpPost]
-        //[Route("/AddFinancialYear")]
-        //public async Task<ActionResult> AddFinancialYear(FinancialYear financialYear)
-        //{
-        //    return;
-        //}
+        [HttpPost]
+        [Route("/AddFinancialYear")]
+        public async Task<ActionResult> AddFinancialYear(FinancialYear financialYear)
+        {
+            _profitOrLossContext.FinancialYear.Add(financialYear);
+            await _profitOrLossContext.SaveChangesAsync();
 
-        //[HttpPost]
-        //[Route("/AddShareCompany")]
-        //public async Task<ActionResult> AddShareCompany(ShareCompany shareCompany)
-        //{
-        //    return;
-        //}
+            return Ok();
+        }
 
-        //[HttpPut]
-        //[Route("/UpdateFinancialYear")]
-        //public async Task<ActionResult> UpdateFinancialYear(FinancialYear financialYear)
-        //{
-        //    return;
-        //}
+        [HttpPost]
+        [Route("/AddShareCompany")]
+        public async Task<ActionResult> AddShareCompany(ShareCompany shareCompany)
+        {
+            _profitOrLossContext.ShareCompany.Add(shareCompany);
+            await _profitOrLossContext.SaveChangesAsync();
+            return Ok();
+        }
 
-        //[HttpPut]
-        //[Route("/UpdateShareCompany")]
-        //public async Task<ActionResult> UpdateShareCompany(ShareCompany shareCompany)
-        //{
-        //    return;
-        //}
+        [HttpPut]
+        [Route("/UpdateFinancialYear")]
+        public async Task<ActionResult> UpdateFinancialYear(FinancialYear financialYear)
+        {
+            var year = await _profitOrLossContext.FinancialYear.FindAsync(financialYear.FinancialYearId);
+            if (year == null)
+                return BadRequest();
+            year.FinancialYearName =  financialYear.FinancialYearName;        
 
-        //[HttpDelete]
-        //[Route("/UpdateShareCompany")]
-        //public async Task<DeleteFinancialYear> DeleteFinancialYear(int id)
-        //{
-        //    return;
-        //}
+            return Ok();
+        }
 
-        //[HttpDelete]
-        //[Route("/DeleteShareCompany")]
-        //public async Task<ActionResult> DeleteShareCompany(int id)
-        //{
-        //    return;
-        //}
+        [HttpPut]
+        [Route("/UpdateShareCompany")]
+        public async Task<ActionResult> UpdateShareCompany(ShareCompany shareCompany)
+        {
+            var company = await _profitOrLossContext.ShareCompany.FindAsync(shareCompany.ShareCompanyId);
+            if (company == null)
+                return BadRequest();
+            company.ShareCompanyName = company.ShareCompanyName;
+            await _profitOrLossContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("/UpdateShareCompany")]
+        public async Task<ActionResult> DeleteFinancialYear(int id)
+        {
+            var year = await _profitOrLossContext.FinancialYear.FindAsync(id);
+            if (year == null)
+                return BadRequest();
+            _profitOrLossContext.FinancialYear.Remove(year);
+            await _profitOrLossContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("/DeleteShareCompany")]
+        public async Task<ActionResult> DeleteShareCompany(int id)
+        {
+            var company = await _profitOrLossContext.ShareCompany.FindAsync(id);
+            if (company == null)
+                return BadRequest();
+            _profitOrLossContext.ShareCompany.Remove(company); 
+            await _profitOrLossContext.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
