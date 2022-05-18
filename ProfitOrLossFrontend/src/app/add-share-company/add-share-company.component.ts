@@ -12,4 +12,7 @@ export class AddShareCompanyComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  saveFinancialYear(){
+    
+  }
 }

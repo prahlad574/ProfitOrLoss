@@ -1,6 +1,10 @@
 <mat-dialog-content>
-    This is a dialog
+  <mat-form-field appearance="outline">
+    <mat-label>Please enter Share Company Name</mat-label>
+    <input matInput placeholder="ex: LICI">
+  </mat-form-field>
   </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Okay</button>
+  <mat-dialog-actions allign ="end">
+    <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial>Cancel</button>
+    <button mat-stroked-button color="warn" (click)="saveFinancialYear()">Save</button>
   </mat-dialog-actions>

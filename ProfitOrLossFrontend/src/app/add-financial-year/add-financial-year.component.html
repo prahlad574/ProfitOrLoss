@@ -1,6 +1,10 @@
 <mat-dialog-content>
-    This is a dialog
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Okay</button>
-  </mat-dialog-actions>
+  <mat-form-field appearance="outline">
+    <mat-label>Please enter finacial year</mat-label>
+    <input matInput placeholder="Ex: 2021-2022">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions allign ="end">
+  <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button mat-stroked-button color="warn"(click)="saveShareCompany()">Save</button>
+</mat-dialog-actions>
