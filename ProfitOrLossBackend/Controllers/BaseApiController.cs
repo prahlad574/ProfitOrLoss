@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ProfitOrLossBackend.Controllers
 {
@@ -29,9 +28,9 @@ namespace ProfitOrLossBackend.Controllers
 
         [HttpPost]
         [Route("/AddFinancialYear")]
-        public async Task<ActionResult> AddFinancialYear(FinancialYear financialYear)
+        public async Task<ActionResult> AddFinancialYear([FromBody] FinancialYear request)
         {
-            _profitOrLossContext.FinancialYear.Add(financialYear);
+            _profitOrLossContext.FinancialYear.Add(request);
             await _profitOrLossContext.SaveChangesAsync();
 
             return Ok();
@@ -39,7 +38,7 @@ namespace ProfitOrLossBackend.Controllers
 
         [HttpPost]
         [Route("/AddShareCompany")]
-        public async Task<ActionResult> AddShareCompany(ShareCompany shareCompany)
+        public async Task<ActionResult> AddShareCompany([FromBody] ShareCompany shareCompany)
         {
             _profitOrLossContext.ShareCompany.Add(shareCompany);
             await _profitOrLossContext.SaveChangesAsync();
@@ -48,7 +47,7 @@ namespace ProfitOrLossBackend.Controllers
 
         [HttpPut]
         [Route("/UpdateFinancialYear")]
-        public async Task<ActionResult> UpdateFinancialYear(FinancialYear financialYear)
+        public async Task<ActionResult> UpdateFinancialYear([FromBody] FinancialYear financialYear)
         {
             var year = await _profitOrLossContext.FinancialYear.FindAsync(financialYear.FinancialYearId);
             if (year == null)
@@ -60,7 +59,7 @@ namespace ProfitOrLossBackend.Controllers
 
         [HttpPut]
         [Route("/UpdateShareCompany")]
-        public async Task<ActionResult> UpdateShareCompany(ShareCompany shareCompany)
+        public async Task<ActionResult> UpdateShareCompany([FromBody] ShareCompany shareCompany)
         {
             var company = await _profitOrLossContext.ShareCompany.FindAsync(shareCompany.ShareCompanyId);
             if (company == null)
@@ -71,7 +70,7 @@ namespace ProfitOrLossBackend.Controllers
         }
 
         [HttpDelete]
-        [Route("/UpdateShareCompany")]
+        [Route("/DeleteFinancialYear")]
         public async Task<ActionResult> DeleteFinancialYear(int id)
         {
             var year = await _profitOrLossContext.FinancialYear.FindAsync(id);
