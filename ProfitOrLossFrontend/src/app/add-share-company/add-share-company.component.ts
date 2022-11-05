@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BackendService } from '../services/backend.service';
 
 @Component({
   selector: 'app-add-share-company',
@@ -6,13 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-share-company.component.css']
 })
 export class AddShareCompanyComponent implements OnInit {
-
-  constructor() { }
+  shareCompanyName!: string;
+  constructor(private backendService: BackendService) { }
 
   ngOnInit(): void {
   }
 
-  saveFinancialYear(){
-    
+  saveShareCompany(){
+    this.backendService.addShareCompany(this.shareCompanyName).subscribe(r => console.log(r));
   }
 }

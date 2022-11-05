@@ -8,18 +8,24 @@ import { Observable } from 'rxjs';
 export class BackendService {
 
   readonly backendUrl = "https://localhost:7219"; 
+  header = new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private http: HttpClient) { }
+  
   addShareCompany(shareCompanyName: string) {
-    return this.http.post(this.backendUrl + '/AddShareCompany', shareCompanyName);
+    const data = { shareCompanyName }
+    return this.http.post(this.backendUrl + '/AddShareCompany', data, {headers: this.header});
   }
   addFinancialYear(financialYearName: string):Observable<any> {
   
     const data = { financialYearName }
-    var header = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(this.backendUrl + '/AddFinancialYear', data, {headers: header});
+
+    return this.http.post(this.backendUrl + '/AddFinancialYear', data, {headers: this.header});
   }
 
   getFinancialYear():Observable<any>{
     return this.http.get(this.backendUrl + '/GetFinancialYear');
+  }
+  getShareCompany():Observable<any>{
+    return this.http.get(this.backendUrl + '/GetShareCompany');
   }
 }

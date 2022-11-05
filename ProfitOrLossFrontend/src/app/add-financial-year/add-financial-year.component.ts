@@ -17,8 +17,8 @@ export class AddFinancialYearComponent implements OnInit {
 
   saveFinancialYear(){
     
-    //this.backendService.getFinancialYear().subscribe(s => console.log(s));
+    this.backendService.getFinancialYear().subscribe(s => console.log(s));
+    this.backendService.getShareCompany().subscribe(s => console.log(s));
     const gud = this.backendService.addFinancialYear(this.financialYearName).subscribe(r => console.log(r));
-    console.log(gud);
   }
 }
