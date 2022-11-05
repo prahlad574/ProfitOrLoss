@@ -16,12 +16,16 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import { BackendService } from './services/backend.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ShowFinancialYearComponent } from './show-financial-year/show-financial-year.component';
+import { ShowShareCompanyComponent } from './show-share-company/show-share-company.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddFinancialYearComponent,
-    AddShareCompanyComponent
+    AddShareCompanyComponent,
+    ShowFinancialYearComponent,
+    ShowShareCompanyComponent
   ],
   imports: [
     BrowserModule,

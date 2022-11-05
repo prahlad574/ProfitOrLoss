@@ -2,6 +2,8 @@ import {Component, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { AddFinancialYearComponent } from './add-financial-year/add-financial-year.component';
 import { AddShareCompanyComponent } from './add-share-company/add-share-company.component';
+import { ShowFinancialYearComponent } from './show-financial-year/show-financial-year.component';
+import { ShowShareCompanyComponent } from './show-share-company/show-share-company.component';
 
 @Component({
   selector: 'app-root',
@@ -19,5 +21,12 @@ export class AppComponent {
   }
   openAddShareCompanyDialog() {
     const dialogRef = this.dialog.open(AddShareCompanyComponent, {restoreFocus: false});
+  }
+
+  openShowFinancialYearDialog(){
+    const dialogRef = this.dialog.open(ShowFinancialYearComponent, {restoreFocus: false});
+  }
+  openShowShareCompanyDialog(){
+    const dialogRef = this.dialog.open(ShowShareCompanyComponent, {restoreFocus: false});
   }
 }
