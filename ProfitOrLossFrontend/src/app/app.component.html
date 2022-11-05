@@ -1,0 +1,13 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>My App</span>
+  <span class="example-spacer"></span>
+  <button mat-raised-button color="accent"[matMenuTriggerFor]="menu" #menuTrigger>Add Meta Data</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="openAddFinancialYearDialog()">AddFinancialYear</button>
+  <button mat-menu-item (click)="openAddShareCompanyDialog()">AddShareCompany</button>
+
+</mat-menu>
+</mat-toolbar>

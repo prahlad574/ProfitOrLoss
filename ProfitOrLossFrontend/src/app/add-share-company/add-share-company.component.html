@@ -1,0 +1,10 @@
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Please enter Share Company Name</mat-label>
+    <input [(ngModel)] = "shareCompanyName" matInput placeholder="ex: LICI">
+  </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions allign ="end">
+    <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial>Cancel</button>
+    <button mat-stroked-button color="warn" (click)="saveShareCompany()">Save</button>
+  </mat-dialog-actions>
