@@ -18,6 +18,8 @@ import { BackendService } from './services/backend.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ShowFinancialYearComponent } from './show-financial-year/show-financial-year.component';
 import { ShowShareCompanyComponent } from './show-share-company/show-share-company.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { ShowShareCompanyComponent } from './show-share-company/show-share-compa
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule,
+    MatCheckboxModule
   ],
   providers: [BackendService],
   bootstrap: [AppComponent]
