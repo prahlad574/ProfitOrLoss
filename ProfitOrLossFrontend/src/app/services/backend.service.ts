@@ -15,6 +15,7 @@ export class BackendService {
     const data = { shareCompanyName }
     return this.http.post(this.backendUrl + '/AddShareCompany', data, {headers: this.header});
   }
+
   addFinancialYear(financialYearName: string):Observable<any> {
   
     const data = { financialYearName }
@@ -25,7 +26,13 @@ export class BackendService {
   getFinancialYear():Observable<any>{
     return this.http.get(this.backendUrl + '/GetFinancialYear');
   }
+
   getShareCompany():Observable<any>{
     return this.http.get(this.backendUrl + '/GetShareCompany');
+  }
+
+  deleteFinancialYear(financialYearId: number){
+    const data = {financialYearId}
+    return this.http.post(this.backendUrl + '/DeleteFinancialYear', data, {headers: this.header});
   }
 }

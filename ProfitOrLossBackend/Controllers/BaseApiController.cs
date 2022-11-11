@@ -69,11 +69,11 @@ namespace ProfitOrLossBackend.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("/DeleteFinancialYear")]
-        public async Task<ActionResult> DeleteFinancialYear(int id)
+        public async Task<ActionResult> DeleteFinancialYear([FromBody] FinancialYear financialYear)
         {
-            var year = await _profitOrLossContext.FinancialYear.FindAsync(id);
+            var year = await _profitOrLossContext.FinancialYear.FindAsync(financialYear.FinancialYearId);
             if (year == null)
                 return BadRequest();
             _profitOrLossContext.FinancialYear.Remove(year);

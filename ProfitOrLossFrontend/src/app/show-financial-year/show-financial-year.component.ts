@@ -47,5 +47,11 @@ export class ShowFinancialYearComponent implements OnInit {
       return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.financialYearId + 1}`;
     }
 
-  saveFinancialYear(){}
+    deleteFinancialYear(){
+      this.selection.selected.forEach(x => {
+        this.backendService.deleteFinancialYear(x.financialYearId).subscribe(r => console.log(r));
+        this.selection.clear();
+        this.dataSource.data = this.dataSource.data.filter(y => y.financialYearId !== x.financialYearId);
+      });
+    }
 }
