@@ -4,7 +4,7 @@
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
           <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
+            <th class="selectcolumn"  mat-header-cell *matHeaderCellDef>
               <mat-checkbox (change)="$event ? toggleAllRows() : null"
                             [checked]="selection.hasValue() && isAllSelected()"
                             [indeterminate]="selection.hasValue() && !isAllSelected()"
@@ -21,13 +21,13 @@
           </ng-container>
     <!-- Position Column -->
     <ng-container matColumnDef="financialYearId">
-      <th mat-header-cell *matHeaderCellDef> Financial YearId </th>
+      <th mat-header-cell *matHeaderCellDef class="headerColumn"> Financial YearId </th>
       <td mat-cell *matCellDef="let element"> {{element.financialYearId}} </td>
     </ng-container>
   
     <!-- Name Column -->
     <ng-container matColumnDef="financialYearName">
-      <th mat-header-cell *matHeaderCellDef> Financial Year Name </th>
+      <th mat-header-cell *matHeaderCellDef class="headerColumn"> Financial Year Name </th>
       <td mat-cell *matCellDef="let element"> {{element.financialYearName}} </td>
     </ng-container>
   

@@ -1,1 +1,41 @@
-<p>show-share-company works!</p>
+<mat-dialog-content>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+            <ng-container matColumnDef="select">
+              <th class="selectcolumn"  mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()"
+                              [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                              (change)="$event ? selection.toggle(row) : null"
+                              [checked]="selection.isSelected(row)"
+                              [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+      <!-- Position Column -->
+      <ng-container matColumnDef="shareCompanyId">
+        <th mat-header-cell *matHeaderCellDef class="headerColumn"> Share Company Id </th>
+        <td mat-cell *matCellDef="let element"> {{element.shareCompanyId}} </td>
+      </ng-container>
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="shareCompanyName">
+        <th mat-header-cell *matHeaderCellDef class="headerColumn"> Share Company Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.shareCompanyName}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"  ></tr>
+    </table>
+    </mat-dialog-content>
+    <mat-dialog-actions allign ="end">
+      <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial>Cancel</button>
+      <button mat-stroked-button color="warn"(click)="deleteShareCompany()">Delete</button>
+    </mat-dialog-actions>

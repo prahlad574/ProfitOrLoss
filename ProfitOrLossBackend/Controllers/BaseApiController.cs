@@ -81,11 +81,11 @@ namespace ProfitOrLossBackend.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("/DeleteShareCompany")]
-        public async Task<ActionResult> DeleteShareCompany(int id)
+        public async Task<ActionResult> DeleteShareCompany([FromBody] ShareCompany shareCompany)
         {
-            var company = await _profitOrLossContext.ShareCompany.FindAsync(id);
+            var company = await _profitOrLossContext.ShareCompany.FindAsync(shareCompany.ShareCompanyId);
             if (company == null)
                 return BadRequest();
             _profitOrLossContext.ShareCompany.Remove(company); 
