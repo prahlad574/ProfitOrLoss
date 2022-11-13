@@ -20,6 +20,8 @@ import { ShowFinancialYearComponent } from './show-financial-year/show-financial
 import { ShowShareCompanyComponent } from './show-share-company/show-share-company.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { AgGridModule } from 'ag-grid-angular';
+import { AngularGridComponent } from './angular-grid/angular-grid.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     AddFinancialYearComponent,
     AddShareCompanyComponent,
     ShowFinancialYearComponent,
-    ShowShareCompanyComponent
+    ShowShareCompanyComponent,
+    AngularGridComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatInputModule,
     HttpClientModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    AgGridModule
   ],
   providers: [BackendService],
   bootstrap: [AppComponent]
