@@ -69,11 +69,11 @@ namespace ProfitOrLossBackend.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("/DeleteFinancialYear")]
-        public async Task<ActionResult> DeleteFinancialYear(int id)
+        public async Task<ActionResult> DeleteFinancialYear([FromBody] FinancialYear financialYear)
         {
-            var year = await _profitOrLossContext.FinancialYear.FindAsync(id);
+            var year = await _profitOrLossContext.FinancialYear.FindAsync(financialYear.FinancialYearId);
             if (year == null)
                 return BadRequest();
             _profitOrLossContext.FinancialYear.Remove(year);
@@ -81,11 +81,11 @@ namespace ProfitOrLossBackend.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("/DeleteShareCompany")]
-        public async Task<ActionResult> DeleteShareCompany(int id)
+        public async Task<ActionResult> DeleteShareCompany([FromBody] ShareCompany shareCompany)
         {
-            var company = await _profitOrLossContext.ShareCompany.FindAsync(id);
+            var company = await _profitOrLossContext.ShareCompany.FindAsync(shareCompany.ShareCompanyId);
             if (company == null)
                 return BadRequest();
             _profitOrLossContext.ShareCompany.Remove(company); 

@@ -16,12 +16,21 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import { BackendService } from './services/backend.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ShowFinancialYearComponent } from './show-financial-year/show-financial-year.component';
+import { ShowShareCompanyComponent } from './show-share-company/show-share-company.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { AgGridModule } from 'ag-grid-angular';
+import { AngularGridComponent } from './angular-grid/angular-grid.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddFinancialYearComponent,
-    AddShareCompanyComponent
+    AddShareCompanyComponent,
+    ShowFinancialYearComponent,
+    ShowShareCompanyComponent,
+    AngularGridComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +45,10 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule,
+    MatCheckboxModule,
+    AgGridModule
   ],
   providers: [BackendService],
   bootstrap: [AppComponent]

@@ -6,8 +6,14 @@
   <span class="example-spacer"></span>
   <button mat-raised-button color="accent"[matMenuTriggerFor]="menu" #menuTrigger>Add Meta Data</button>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="openAddFinancialYearDialog()">AddFinancialYear</button>
-  <button mat-menu-item (click)="openAddShareCompanyDialog()">AddShareCompany</button>
+  <button mat-menu-item (click)="openAddFinancialYearDialog()">Add Financial Year</button>
+  <button mat-menu-item (click)="openAddShareCompanyDialog()">Add Share Company</button>
+</mat-menu>
 
+<button mat-raised-button color="accent"[matMenuTriggerFor]="get" #menuTrigger>Show Meta Data</button>
+<mat-menu #get="matMenu">
+  <button mat-menu-item (click)="openShowFinancialYearDialog()">Show Financial Year</button>
+  <button mat-menu-item (click)="openShowShareCompanyDialog()">Show Share Company</button>
 </mat-menu>
 </mat-toolbar>
+<app-angular-grid></app-angular-grid>
