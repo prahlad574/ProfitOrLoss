@@ -11,28 +11,11 @@ import { EventQueueService } from '../services/event-queue.service';
 })
 export class AngularGridComponent implements OnInit {
   shareCompanyNames: string[] =[];
-  public columnDefs: ColDef[] = [
-    {
-      field: 'Share Company',
-      editable: true,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {
-        values: this.shareCompanyNames
-      }
-    } as ColDef,
-    {
-      field: 'Cost Price',
-      editable: true,
-      cellEditor: 'agTextCellEditor'
-    } as ColDef,
-    {
-      field: 'Selling Price'
-    } as ColDef,{
-      field: 'Profit Or Loss'
-    }as ColDef,
-  ];
+  
+  public columnDefs: ColDef[] = [];
+
   public rowData: any[] = [{
-    shareCompanyName:'',
+    shareCompanyName:'MyWish',
     costPrice: 100,
     sellingPrice: 200,
     profitOrLoss: 100
@@ -43,22 +26,34 @@ export class AngularGridComponent implements OnInit {
   ngOnInit(): void {
     this.eventQueue.On(AppEventType.ShareCompaniesLoaded).subscribe(event => this.loadshareCmpanyValues())
   }
-    loadshareCmpanyValues= () =>{
-      this.shareCompanyNames = this.dataSource.getShareCompanyNames();
-    }
- buildColumnDefinitions(): ColDef[] {
-    return  [
-      {
-        field: 'Share Company'
-      } as ColDef,
-      {
-        field: 'Cost Price'
-      } as ColDef,
-      {
-        field: 'Selling Price'
-      } as ColDef,{
-        field: 'Profit Or Loss'
-      }as ColDef,
-    ];
+
+  loadshareCmpanyValues= () =>{
+    this.shareCompanyNames = this.dataSource.getShareCompanyNames();
+    this.columnDefs = this.buildColumnDefinitions();
   }
+  
+  buildColumnDefinitions(): ColDef[] {
+      return   [
+        {
+          field: 'Share Company',
+          editable: true,
+          cellEditor: 'agSelectCellEditor',
+          cellEditorParams: {
+            values: this.shareCompanyNames
+          }
+        } as ColDef,
+        {
+          field: 'Cost Price',
+          editable: true,
+          cellEditor: 'agTextCellEditor'
+        } as ColDef,
+        {
+          field: 'Selling Price',
+          editable: true,
+          cellEditor: 'agTextCellEditor'
+        } as ColDef,{
+          field: 'Profit Or Loss'
+        }as ColDef,
+      ];
+    }
 }
