@@ -9,16 +9,25 @@ import { BackendService } from '../services/backend.service';
 })
 export class AddFinancialYearComponent implements OnInit {
   financialYearName!: string;
-
+  successMessage!: string;
+  errorMessage!: string;
   constructor(private backendService: BackendService) { }
 
   ngOnInit(): void {
   }
 
   saveFinancialYear(){
-    
-    this.backendService.getFinancialYear().subscribe(s => console.log(s));
-    this.backendService.getShareCompany().subscribe(s => console.log(s));
-    const gud = this.backendService.addFinancialYear(this.financialYearName).subscribe(r => console.log(r));
+    this.successMessage='';
+    this.errorMessage='';
+
+    this.backendService.addFinancialYear(this.financialYearName).subscribe({
+      next: response => {
+         this.successMessage='Share company got added successfully';
+      },
+      error: error => {
+        this.errorMessage='Error occurred while saving Share Company';
+        console.log('There was an error while saving share company:', error);
+      }
+    });
   }
 }

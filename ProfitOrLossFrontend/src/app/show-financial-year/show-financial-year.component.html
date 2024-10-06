@@ -34,6 +34,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"  ></tr>
   </table>
+  <div style="color: red;" *ngIf="errorMessage != null">{{errorMessage}}</div>
   </mat-dialog-content>
   <mat-dialog-actions allign ="end">
     <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial>Cancel</button>

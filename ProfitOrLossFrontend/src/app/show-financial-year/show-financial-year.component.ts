@@ -16,6 +16,7 @@ export class ShowFinancialYearComponent implements OnInit {
   displayedColumns: string[] = ['select','financialYearId', 'financialYearName'];
   dataSource= new MatTableDataSource<FinancialYear>();
   selection = new SelectionModel<FinancialYear>(true, []);
+  errorMessage!: string;
   constructor(private backendService: BackendService) { }
 
   ngOnInit(): void {
@@ -48,10 +49,17 @@ export class ShowFinancialYearComponent implements OnInit {
     }
 
     deleteFinancialYear(){
+      this.errorMessage = '';
       this.selection.selected.forEach(x => {
-        this.backendService.deleteFinancialYear(x.financialYearId).subscribe(r => console.log(r));
+        this.backendService.deleteFinancialYear(x.financialYearId).subscribe({
+          next: response=>{
+            this.dataSource.data= this.dataSource.data.filter(y => y.financialYearId !== x.financialYearId);
+          },
+          error: error=>{
+            this.errorMessage= 'Error occured while deleting Financial Year';
+          }
+        });
         this.selection.clear();
-        this.dataSource.data = this.dataSource.data.filter(y => y.financialYearId !== x.financialYearId);
       });
     }
 }
