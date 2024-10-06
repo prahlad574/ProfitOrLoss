@@ -3,6 +3,8 @@
     <mat-label>Please enter Share Company Name</mat-label>
     <input [(ngModel)] = "shareCompanyName" matInput placeholder="ex: LICI">
   </mat-form-field>
+  <div style="color: red;" *ngIf="errorMessage != null">{{errorMessage}}</div>
+  <div style="color: green;" *ngIf="successMessage != null">{{successMessage}}</div>
   </mat-dialog-content>
   <mat-dialog-actions allign ="end">
     <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial>Cancel</button>

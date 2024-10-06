@@ -16,6 +16,7 @@ export class ShowShareCompanyComponent implements OnInit {
   displayedColumns: string[] = ['select','shareCompanyId', 'shareCompanyName'];
   dataSource= new MatTableDataSource<ShareCompany>();
   selection = new SelectionModel<ShareCompany>(true, []);
+  errorMessage!: string;
   constructor(private backendService: BackendService) { }
 
   ngOnInit(): void {
@@ -46,10 +47,17 @@ export class ShowShareCompanyComponent implements OnInit {
   }
 
   deleteShareCompany(){
+    this.errorMessage= '';
     this.selection.selected.forEach(x => {
-      this.backendService.deleteShareCompany(x.shareCompanyId).subscribe(r => console.log(r));
+      this.backendService.deleteShareCompany(x.shareCompanyId).subscribe({
+        next: response =>{
+          this.dataSource.data = this.dataSource.data.filter(y => y.shareCompanyId !== x.shareCompanyId);
+        },
+        error: error=>{
+          this.errorMessage= 'Error occurred while deleting Share Company';
+        } 
+      });
       this.selection.clear();
-      this.dataSource.data = this.dataSource.data.filter(y => y.shareCompanyId !== x.shareCompanyId);
     });
   }
 }

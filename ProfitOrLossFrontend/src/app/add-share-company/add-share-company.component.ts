@@ -8,12 +8,25 @@ import { BackendService } from '../services/backend.service';
 })
 export class AddShareCompanyComponent implements OnInit {
   shareCompanyName!: string;
+  successMessage!: string;
+  errorMessage!: string;
   constructor(private backendService: BackendService) { }
 
   ngOnInit(): void {
   }
 
   saveShareCompany(){
-    this.backendService.addShareCompany(this.shareCompanyName).subscribe(r => console.log(r));
+    this.successMessage='';
+    this.errorMessage='';
+
+    this.backendService.addShareCompany(this.shareCompanyName).subscribe({
+      next: response => {
+         this.successMessage='Share company got added successfully';
+      },
+      error: error => {
+        this.errorMessage='Error occurred while saving Share Company';
+        console.log('There was an error while saving share company:', error);
+      }
+    });
   }
 }

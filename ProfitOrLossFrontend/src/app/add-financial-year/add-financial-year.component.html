@@ -3,6 +3,8 @@
     <mat-label>Please enter finacial year</mat-label>
     <input [(ngModel)] = "financialYearName" matInput placeholder="Ex: 2021-2022">
   </mat-form-field>
+  <div style="color: red;" *ngIf="errorMessage != null">{{errorMessage}}</div>
+  <div style="color: green;" *ngIf="successMessage != null">{{successMessage}}</div>
 </mat-dialog-content>
 <mat-dialog-actions allign ="end">
   <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial>Cancel</button>
