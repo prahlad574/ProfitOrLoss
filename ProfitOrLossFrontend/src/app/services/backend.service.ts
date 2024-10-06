@@ -32,12 +32,10 @@ export class BackendService {
   }
 
   deleteFinancialYear(financialYearId: number){
-    const data = {financialYearId}
-    return this.http.post(this.backendUrl + '/DeleteFinancialYear', data, {headers: this.header});
+    return this.http.delete(this.backendUrl + '/DeleteFinancialYear/' + financialYearId, {headers: this.header});
   }
   
   deleteShareCompany(shareCompanyId: number){
-    const data = {shareCompanyId}
-    return this.http.post(this.backendUrl + '/DeleteShareCompany', data, {headers: this.header});
+    return this.http.delete(this.backendUrl + '/DeleteShareCompany/' + shareCompanyId, {headers: this.header});
   }
 }
