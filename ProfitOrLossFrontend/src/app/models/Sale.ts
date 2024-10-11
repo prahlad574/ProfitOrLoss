@@ -1,8 +1,9 @@
 
-export interface ISale{
+export interface Sale{
     shareCompany?: string;
     costPrice?: number
     sellingPrice?: number;
     profitOrLoss?: number;
-    id: string;
+    saleId: string;
+    financialYear: string;
 }

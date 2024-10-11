@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Sale } from '../models/Sale';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,10 @@ export class BackendService {
   
   deleteShareCompany(shareCompanyId: number){
     return this.http.delete(this.backendUrl + '/DeleteShareCompany/' + shareCompanyId, {headers: this.header});
+  }
+
+  updateSale(sale: Sale){
+    
+    return this.http.post(this.backendUrl + '/UpdateSale', sale, {headers: this.header});
   }
 }

@@ -7,6 +7,6 @@
         }
         public DbSet<FinancialYear> FinancialYear { get; set; }
         public DbSet<ShareCompany> ShareCompany { get; set; }
-        public DbSet<Sale> Sale { get; set; }
+        public DbSet<SaleEntity> Sale { get; set; }
     }
 }
