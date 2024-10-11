@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace ProfitOrLossBackend.Models
+﻿namespace ProfitOrLossBackend.Models
 {
     public class ProfitOrLossContext : DbContext 
     {
@@ -9,5 +7,6 @@ namespace ProfitOrLossBackend.Models
         }
         public DbSet<FinancialYear> FinancialYear { get; set; }
         public DbSet<ShareCompany> ShareCompany { get; set; }
+        public DbSet<Sale> Sale { get; set; }
     }
 }
