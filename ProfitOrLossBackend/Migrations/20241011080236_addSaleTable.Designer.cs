@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfitOrLossBackend.Models;
 
@@ -11,9 +12,11 @@ using ProfitOrLossBackend.Models;
 namespace ProfitOrLossBackend.Migrations
 {
     [DbContext(typeof(ProfitOrLossContext))]
-    partial class ProfitOrLossContextModelSnapshot : ModelSnapshot
+    [Migration("20241011080236_addSaleTable")]
+    partial class addSaleTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

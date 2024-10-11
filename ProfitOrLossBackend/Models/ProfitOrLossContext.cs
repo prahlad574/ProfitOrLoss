@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace ProfitOrLossBackend.Models
+﻿namespace ProfitOrLossBackend.Models
 {
     public class ProfitOrLossContext : DbContext 
     {
