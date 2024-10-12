@@ -4,7 +4,9 @@ import { DataSourceService } from '../data-source.service';
 import { AppEventType } from '../models/app.event.type';
 import { BackendService } from '../services/backend.service';
 import { EventQueueService } from '../services/event-queue.service';
-import { ISale } from '../models/ISale';
+import { Sale } from '../models/Sale';
+import { v4 as uuidv4 } from 'uuid';
+
 @Component({
   selector: 'app-angular-grid',
   templateUrl: './angular-grid.component.html',
@@ -15,22 +17,24 @@ export class AngularGridComponent implements OnInit {
   
   public columnDefs: ColDef[] = [];
   public rowData: any[] = [{
-    id: '1234',
+    saleId: uuidv4(),
     shareCompany:'MyWish',
     costPrice: 100,
     sellingPrice: 200,
-    profitOrLoss: 100
-  } as ISale] ;
+    profitOrLoss: 100,
+    financialYear: '2024-2025'
+  } as Sale] ;
 
-  private gridApi!: GridApi<ISale>;
+  private gridApi!: GridApi<Sale>;
   constructor(private dataSource: DataSourceService,
-    private eventQueue: EventQueueService) { }
+    private eventQueue: EventQueueService,
+    private backendService: BackendService) { }
 
   ngOnInit(): void {
     this.eventQueue.On(AppEventType.ShareCompaniesLoaded).subscribe(event => this.loadshareCmpanyValues())
   }
 
-  onGridReady(params: GridReadyEvent<ISale>) {
+  onGridReady(params: GridReadyEvent<Sale>) {
     this.gridApi = params.api;
   }
   loadshareCmpanyValues= () =>{
@@ -41,8 +45,9 @@ export class AngularGridComponent implements OnInit {
       costPrice: null,
       sellingPrice: null,
       profitOrLoss: null,
-      id: '23456'
-    } as unknown as ISale);
+      saleId: uuidv4(),
+      financialYear: '2024-2025'
+    } as unknown as Sale);
   }
   
   buildColumnDefinitions(): ColDef[] {
@@ -72,10 +77,19 @@ export class AngularGridComponent implements OnInit {
 
   onCellValueChanged(event: CellValueChangedEvent){
     const data = event.data
-    if(event.column.getColId() !== 'shareCompany' && event.rowIndex !== null){
-      this.rowData[event.rowIndex].profitOrLoss = data.sellingPrice - data.costPrice;
+    if(event.column.getColId() !== 'shareCompany' && event.rowIndex !== null && data.sellingPrice!=null){
+      data.profitOrLoss = data.sellingPrice - data.costPrice;
+      this.rowData[event.rowIndex].profitOrLoss = data.profitOrLoss;
       this.gridApi.setRowData(this.rowData);
-    }  
+    }
+    this.backendService.updateSale(data).subscribe({
+      next: response => {
+        console.log('respnse from updating sale is:' + response);
+      },
+      error: error => { 
+        console.log('error from updating sale is:' + error)
+      }
+    })  
   }
 
 }
