@@ -22,6 +22,8 @@ import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { AgGridModule } from 'ag-grid-angular';
 import { AngularGridComponent } from './angular-grid/angular-grid.component';
+import { FinancialYearToggleComponent } from './financial-year-toggle/financial-year-toggle.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { AngularGridComponent } from './angular-grid/angular-grid.component';
     AddShareCompanyComponent,
     ShowFinancialYearComponent,
     ShowShareCompanyComponent,
-    AngularGridComponent
+    AngularGridComponent,
+    FinancialYearToggleComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import { AngularGridComponent } from './angular-grid/angular-grid.component';
     HttpClientModule,
     MatTableModule,
     MatCheckboxModule,
-    AgGridModule
+    AgGridModule,
+    MatButtonToggleModule
   ],
   providers: [BackendService],
   bootstrap: [AppComponent]
