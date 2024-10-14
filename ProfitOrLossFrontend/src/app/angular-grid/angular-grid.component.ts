@@ -31,25 +31,27 @@ export class AngularGridComponent implements OnInit {
     private backendService: BackendService) { }
 
   ngOnInit(): void {
-    this.eventQueue.On(AppEventType.ShareCompaniesLoaded).subscribe(event => this.loadshareCmpanyValues())
+    this.eventQueue.On(AppEventType.BasicMetaDataLoaded).subscribe(event => this.buildDefinitions())
   }
 
   onGridReady(params: GridReadyEvent<Sale>) {
     this.gridApi = params.api;
   }
-  loadshareCmpanyValues= () =>{
+  buildDefinitions= () =>{
     this.shareCompanyNames = this.dataSource.getShareCompanyNames();
     this.columnDefs = this.buildColumnDefinitions();
-    this.rowData= this.rowData.concat({
+    this.rowData= this.dataSource.getSaleData().concat(this.getNewRowData());
+  }
+  getNewRowData(): Sale{
+    return {
       shareCompany: '',
       costPrice: null,
       sellingPrice: null,
       profitOrLoss: null,
       saleId: uuidv4(),
-      financialYear: '2024-2025'
-    } as unknown as Sale);
+      financialYear: this.dataSource.getSelectedFinancialYear()
+    } as unknown as Sale
   }
-  
   buildColumnDefinitions(): ColDef[] {
       return   [
         {

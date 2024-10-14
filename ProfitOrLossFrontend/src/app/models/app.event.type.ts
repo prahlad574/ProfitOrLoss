@@ -1,3 +1,4 @@
 export enum AppEventType{
-    ShareCompaniesLoaded = 'shareCompaniesLoadedEvent'
+    ShareCompaniesLoaded = 'shareCompaniesLoadedEvent',
+    BasicMetaDataLoaded = 'basicMetaDataLoaded'
 }

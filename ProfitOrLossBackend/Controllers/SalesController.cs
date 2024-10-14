@@ -39,5 +39,12 @@ namespace ProfitOrLossBackend.Controllers
             await _profitOrLossContext.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpGet]
+        [Route("/getSalesForFinancialYear/{financialYear}")]
+        public async Task<ActionResult<List<Sale>>> GetSalesForFinancialYear(string financialYear)
+        {
+            return Ok( await _profitOrLossContext.Sale.Where(x => x.FinancialYear == financialYear).ToListAsync());
+        }
     }
 }

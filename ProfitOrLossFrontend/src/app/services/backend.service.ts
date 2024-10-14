@@ -44,4 +44,8 @@ export class BackendService {
     
     return this.http.post(this.backendUrl + '/UpdateSale', sale, {headers: this.header});
   }
+  
+  getSalesForFinancialYear(financialYear: string){
+    return this.http.get(this.backendUrl + '/getSalesForFinancialYear/' + financialYear, {headers: this.header});
+  }
 }

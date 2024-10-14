@@ -2,6 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { BackendService } from '../services/backend.service';
+import { DataSourceService } from '../data-source.service';
 
 export interface ShareCompany{
   shareCompanyId: number;
@@ -17,10 +18,14 @@ export class ShowShareCompanyComponent implements OnInit {
   dataSource= new MatTableDataSource<ShareCompany>();
   selection = new SelectionModel<ShareCompany>(true, []);
   errorMessage!: string;
-  constructor(private backendService: BackendService) { }
+  constructor(
+    private backendService: BackendService,
+    private dataSourceService: DataSourceService
+  ) { }
 
   ngOnInit(): void {
-    this.backendService.getShareCompany().subscribe(r => this.dataSource = new MatTableDataSource<ShareCompany>(r));
+    var shareCompanies= this.dataSourceService.getShareComapnies();
+    this.dataSource = new MatTableDataSource<ShareCompany>(shareCompanies);
   }
   isAllSelected() {
     const numSelected = this.selection.selected.length;
