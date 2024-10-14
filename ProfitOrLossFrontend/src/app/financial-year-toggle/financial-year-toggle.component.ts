@@ -1,4 +1,8 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { FinancialYear } from '../show-financial-year/show-financial-year.component';
+import { DataSource } from '@angular/cdk/collections';
+import { DataSourceService } from '../data-source.service';
+import { EventQueueService } from '../services/event-queue.service';
 
 @Component({
   selector: 'app-financial-year-toggle',
@@ -6,14 +10,18 @@ import { Component, OnInit, SimpleChanges } from '@angular/core';
   styleUrls: ['./financial-year-toggle.component.css']
 })
 export class FinancialYearToggleComponent implements OnInit {
-  selectedFinancialYear?: string;
-  financialYears: string[] = [];
-  constructor() { }
+  @Input() selectedFinancialYear: string= '';
+  @Input() financialYears: FinancialYear[] = [];
+  constructor(
+    private dataSourceService: DataSourceService,
+    private eventQueueService: EventQueueService
+  ) { }
 
   ngOnInit(): void {
-    this.financialYears = ['2021-2022', '2022-2023', '2023-2024']
+    
   }
   onFinancialYearChanges(){
-    console.log('I am hit' + event);
+    this.dataSourceService.updateSelectedFinancialYear(this.selectedFinancialYear);
   }
+  
 }

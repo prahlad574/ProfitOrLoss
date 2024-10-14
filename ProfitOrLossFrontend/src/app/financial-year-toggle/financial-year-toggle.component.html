@@ -1,5 +1,5 @@
 <section>
     <mat-button-toggle-group [(ngModel)]="selectedFinancialYear" (change)= "onFinancialYearChanges()" aria-label="Font Style">
-        <mat-button-toggle *ngFor="let financialYear of financialYears" value="{{financialYear}}" >{{financialYear}}</mat-button-toggle>
+        <mat-button-toggle *ngFor="let financialYear of financialYears" value="{{financialYear.financialYearName}}" >{{financialYear.financialYearName}}</mat-button-toggle>
     </mat-button-toggle-group>
 </section>
