@@ -87,6 +87,9 @@ export class AngularGridComponent implements OnInit {
     this.backendService.updateSale(data).subscribe({
       next: response => {
         console.log('respnse from updating sale is:' + response);
+        if(event.rowIndex === this.rowData.length-1){
+          this.rowData= this.rowData.concat(this.getNewRowData());
+        }
       },
       error: error => { 
         console.log('error from updating sale is:' + error)
