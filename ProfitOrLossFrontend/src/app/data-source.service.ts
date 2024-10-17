@@ -53,6 +53,7 @@ salesForFinancialYear: Sale[]=[];
 
   updateSelectedFinancialYear(financialYear: string){
     this.selectedFinancialYear = financialYear;
+    this.getSalesForFinancialYear(this.selectedFinancialYear);
   }
 
   getSaleData(): Sale[]{
@@ -61,5 +62,17 @@ salesForFinancialYear: Sale[]=[];
 
   getSelectedFinancialYear(): string{
     return this.selectedFinancialYear;
+  }
+
+  getSalesForFinancialYear(financialYear: string){
+    this.backendService.getSalesForFinancialYear(financialYear).subscribe({
+      next: (data: any) => {
+        this.salesForFinancialYear = data;
+        this.eventQueue.dispatch(new AppEvent(AppEventType.SalesDataForSelectedFinacialYearLoaded, this.salesForFinancialYear));
+      },
+      error: error=>{
+        console.log('error occured while getting sales data for financial year'+ error)
+      }
+    });
   }
 }

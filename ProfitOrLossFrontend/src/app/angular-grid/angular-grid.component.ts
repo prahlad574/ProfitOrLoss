@@ -32,6 +32,15 @@ export class AngularGridComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventQueue.On(AppEventType.BasicMetaDataLoaded).subscribe(event => this.buildDefinitions())
+    this.eventQueue.On(AppEventType.SalesDataForSelectedFinacialYearLoaded).subscribe(event=> {
+      if(event.payLoad.length === 0){
+        this.rowData= [this.getNewRowData()];
+      }
+      else{
+        this.rowData = event.payLoad.concat(this.getNewRowData());
+      }
+      
+    });
   }
 
   onGridReady(params: GridReadyEvent<Sale>) {
