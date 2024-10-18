@@ -48,4 +48,8 @@ export class BackendService {
   getSalesForFinancialYear(financialYear: string){
     return this.http.get(this.backendUrl + '/getSalesForFinancialYear/' + financialYear, {headers: this.header});
   }
+  
+  getSalesSummaryForFinancialYear(financialYear: string){
+    return this.http.get(this.backendUrl + '/getSalesSummaryForFinacialYear/' + financialYear, {headers: this.header});
+  }
 }

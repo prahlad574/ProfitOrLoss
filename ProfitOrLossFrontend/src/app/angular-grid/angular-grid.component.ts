@@ -16,14 +16,7 @@ export class AngularGridComponent implements OnInit {
   shareCompanyNames: string[] =[];
   selectedButton:string= 'SaleTransaction';
   public columnDefs: ColDef[] = [];
-  public rowData: any[] = [{
-    saleId: uuidv4(),
-    shareCompany:'MyWish',
-    costPrice: 100,
-    sellingPrice: 200,
-    profitOrLoss: 100,
-    financialYear: '2024-2025'
-  } as Sale] ;
+  public rowData: any[] = [] ;
 
   private gridApi!: GridApi<Sale>;
   constructor(private dataSource: DataSourceService,
