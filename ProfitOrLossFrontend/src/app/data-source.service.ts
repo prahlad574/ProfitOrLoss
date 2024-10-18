@@ -16,6 +16,7 @@ shareCompanyNames: ShareCompany[] = [];
 financialYears: FinancialYear[] = [];
 selectedFinancialYear: string= '';
 salesForFinancialYear: Sale[]=[];
+salesSummaryForFinancialYear: Sale[]=[];
 
   constructor(private backendService: BackendService,
     private eventQueue: EventQueueService) { }
@@ -58,6 +59,17 @@ salesForFinancialYear: Sale[]=[];
 
   getSaleData(): Sale[]{
     return this.salesForFinancialYear;
+  }
+
+  getSalesSummaryData():Sale[]{
+    return this.salesSummaryForFinancialYear.concat({
+      financialYear:'2024-2025',
+      saleId:'15232-4545655-5454',
+      costPrice:100,
+      profitOrLoss:200,
+      sellingPrice:300,
+      shareCompany:'LIC'
+    } as Sale);
   }
 
   getSelectedFinancialYear(): string{
