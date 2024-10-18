@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class AngularGridComponent implements OnInit {
   shareCompanyNames: string[] =[];
-  
+  selectedButton:string= 'SaleTransaction';
   public columnDefs: ColDef[] = [];
   public rowData: any[] = [{
     saleId: uuidv4(),
@@ -33,6 +33,8 @@ export class AngularGridComponent implements OnInit {
   ngOnInit(): void {
     this.eventQueue.On(AppEventType.BasicMetaDataLoaded).subscribe(event => this.buildDefinitions())
     this.eventQueue.On(AppEventType.SalesDataForSelectedFinacialYearLoaded).subscribe(event=> {
+      this.selectedButton = 'SaleTransaction';
+      this.columnDefs= this.buildColumnDefinitions();
       if(event.payLoad.length === 0){
         this.rowData= [this.getNewRowData()];
       }
@@ -46,11 +48,12 @@ export class AngularGridComponent implements OnInit {
   onGridReady(params: GridReadyEvent<Sale>) {
     this.gridApi = params.api;
   }
+
   buildDefinitions= () =>{
     this.shareCompanyNames = this.dataSource.getShareCompanyNames();
-    this.columnDefs = this.buildColumnDefinitions();
-    this.rowData= this.dataSource.getSaleData().concat(this.getNewRowData());
+    this.buildDefinitionsAndRowData();
   }
+
   getNewRowData(): Sale{
     return {
       shareCompany: '',
@@ -61,11 +64,12 @@ export class AngularGridComponent implements OnInit {
       financialYear: this.dataSource.getSelectedFinancialYear()
     } as unknown as Sale
   }
+
   buildColumnDefinitions(): ColDef[] {
       return   [
         {
           field: 'shareCompany',
-          editable: true,
+          editable: this.getEditableValue(),
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: {
             values: this.shareCompanyNames
@@ -73,17 +77,21 @@ export class AngularGridComponent implements OnInit {
         } as ColDef,
         {
           field: 'costPrice',
-          editable: true,
+          editable: this.getEditableValue(),
           cellEditor: 'agTextCellEditor'
         } as ColDef,
         {
           field: 'sellingPrice',
-          editable: true,
+          editable: this.getEditableValue(),
           cellEditor: 'agTextCellEditor'
         } as ColDef,{
           field: 'profitOrLoss'
         }as ColDef,
       ];
+  }
+
+  getEditableValue(): boolean {
+    return this.selectedButton === 'SaleTransaction'? true : false;
   }
 
   onCellValueChanged(event: CellValueChangedEvent){
@@ -104,6 +112,20 @@ export class AngularGridComponent implements OnInit {
         console.log('error from updating sale is:' + error)
       }
     })  
+  }
+
+  onButtonChanges() {
+    this.buildDefinitionsAndRowData();
+  }
+
+  buildDefinitionsAndRowData(){
+    this.columnDefs= this.buildColumnDefinitions();
+    if (this.selectedButton === 'SaleTransaction') {
+      this.rowData= this.dataSource.getSaleData().concat(this.getNewRowData())
+    }
+    else{
+      this.rowData= this.dataSource.getSalesSummaryData();
+    }
   }
 
 }

@@ -1,3 +1,9 @@
-<ag-grid-angular 
-class="ag-theme-alpine" [columnDefs]="columnDefs" 
-[rowData]="rowData" (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)"></ag-grid-angular>
+<section>
+    <mat-button-toggle-group [(ngModel)]="selectedButton" (change)= "onButtonChanges()" aria-label="Font Style">
+        <mat-button-toggle  value="SaleSummary" >Sale Summary</mat-button-toggle>
+        <mat-button-toggle  value="SaleTransaction" >Sale Transaction</mat-button-toggle>
+    </mat-button-toggle-group>
+</section>
+
+<ag-grid-angular class="ag-theme-alpine" [columnDefs]="columnDefs" [rowData]="rowData" (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)">
+</ag-grid-angular>
