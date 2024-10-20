@@ -26,12 +26,14 @@ salesSummaryForFinancialYear: Sale[]=[];
     forkJoin({
       financialYears: this.backendService.getFinancialYear(),
       shareCompanies: this.backendService.getShareCompany(),
-      currentFinacialYearSalesData: this.backendService.getSalesForFinancialYear(currentFinancialYear)
+      currentFinacialYearSalesData: this.backendService.getSalesForFinancialYear(currentFinancialYear),
+      currentFinancialYearSummaryData: this.backendService.getSalesSummaryForFinancialYear(currentFinancialYear)
     }).subscribe({
       next: (data: any) =>{
         this.financialYears= data.financialYears;
         this.shareCompanyNames= data.shareCompanies;
         this.salesForFinancialYear= data.currentFinacialYearSalesData;
+        this.salesSummaryForFinancialYear= data.currentFinancialYearSummaryData;
         this.eventQueue.dispatch(new AppEvent(AppEventType.BasicMetaDataLoaded,''));
       },
       error: error=>{
@@ -54,7 +56,7 @@ salesSummaryForFinancialYear: Sale[]=[];
 
   updateSelectedFinancialYear(financialYear: string){
     this.selectedFinancialYear = financialYear;
-    this.getSalesForFinancialYear(this.selectedFinancialYear);
+    this.getSalesAndSummaryForFinancialYear(this.selectedFinancialYear);
   }
 
   getSaleData(): Sale[]{
@@ -76,14 +78,18 @@ salesSummaryForFinancialYear: Sale[]=[];
     return this.selectedFinancialYear;
   }
 
-  getSalesForFinancialYear(financialYear: string){
-    this.backendService.getSalesForFinancialYear(financialYear).subscribe({
+  getSalesAndSummaryForFinancialYear(financialYear: string){
+    forkJoin({
+      currentFinacialYearSalesData: this.backendService.getSalesForFinancialYear(financialYear),
+      currentFinancialYearSummaryData: this.backendService.getSalesSummaryForFinancialYear(financialYear)
+    }).subscribe({
       next: (data: any) => {
-        this.salesForFinancialYear = data;
+        this.salesForFinancialYear = data.currentFinacialYearSalesData;
+        this.salesSummaryForFinancialYear= data.currentFinancialYearSummaryData;
         this.eventQueue.dispatch(new AppEvent(AppEventType.SalesDataForSelectedFinacialYearLoaded, this.salesForFinancialYear));
       },
       error: error=>{
-        console.log('error occured while getting sales data for financial year'+ error)
+        console.log('error occured while getting sales and summary data for financial year'+ error)
       }
     });
   }

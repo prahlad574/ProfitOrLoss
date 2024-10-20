@@ -32,6 +32,7 @@ namespace ProfitOrLossBackend.Controllers
             }
             else
             {
+                result.ShareCompany = sale.ShareCompany;
                 result.CostPrice = sale.CostPrice;
                 result.SellingPrice = sale.SellingPrice;
                 result.ProfitOrLoss = sale.ProfitOrLoss;
