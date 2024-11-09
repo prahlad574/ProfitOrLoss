@@ -1,5 +1,7 @@
 global using ProfitOrLossBackend.Models;
 global using Microsoft.EntityFrameworkCore;
+using ProfitOrLossBackend.Services.Interfaces;
+using ProfitOrLossBackend.Services;
 var myAllowSpeificOrigin = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -12,6 +14,7 @@ builder.Services.AddCors(options =>
                       });
 });
 // Add services to the container.
+builder.Services.AddScoped<ISalesService, SalesService>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ProfitOrLossContext>(options =>

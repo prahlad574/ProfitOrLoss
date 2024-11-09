@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProfitOrLossBackend.Services.Interfaces;
 
 namespace ProfitOrLossBackend.Controllers
 {
@@ -6,38 +7,18 @@ namespace ProfitOrLossBackend.Controllers
     [ApiController]
     public class SalesController : ControllerBase
     {
-        private readonly ProfitOrLossContext _profitOrLossContext;
-        public SalesController(ProfitOrLossContext profitOrLossContext)
+        private readonly ISalesService _salesService;
+
+        public SalesController(ISalesService salesService)
         {
-            _profitOrLossContext = profitOrLossContext;
+            _salesService = salesService;
         }
 
         [HttpPost]
         [Route("/UpdateSale")]
-        public async Task<ActionResult> UpdateSale([FromBody] Sale sale)
+        public ActionResult<SaleSummaryEntity> UpdateSale([FromBody] SaleChange saleChange)
         {
-            var saleId = sale.SaleId != null ? Guid.Parse(sale.SaleId) : Guid.NewGuid();
-            var result = await _profitOrLossContext.Sale.FindAsync(saleId);
-            if (result == null)
-            {
-                _profitOrLossContext.Add(new SaleEntity
-                {
-                    SaleId = saleId,
-                    CostPrice = sale.CostPrice,
-                    SellingPrice = sale.SellingPrice,
-                    FinancialYear = sale.FinancialYear,
-                    ProfitOrLoss = sale.ProfitOrLoss,
-                    ShareCompany = sale.ShareCompany
-                });
-            }
-            else
-            {
-                result.ShareCompany = sale.ShareCompany;
-                result.CostPrice = sale.CostPrice;
-                result.SellingPrice = sale.SellingPrice;
-                result.ProfitOrLoss = sale.ProfitOrLoss;
-            }
-            await _profitOrLossContext.SaveChangesAsync();
+            _salesService.UpdateSale(saleChange);
             return Ok();
         }
 
@@ -45,14 +26,14 @@ namespace ProfitOrLossBackend.Controllers
         [Route("/getSalesForFinancialYear/{financialYear}")]
         public async Task<ActionResult<List<Sale>>> GetSalesForFinancialYear(string financialYear)
         {
-            return Ok( await _profitOrLossContext.Sale.Where(x => x.FinancialYear == financialYear).ToListAsync());
+            return Ok( await _salesService.GetSalesForFinancialYear(financialYear));
         }
 
         [HttpGet]
         [Route("/getSalesSummaryForFinacialYear/{financialYear}")]
-        public async Task<ActionResult<List<Sale>>> GetSalesSummaryForFinancialYear(string financialYear)
+        public async Task<ActionResult<List<SaleSummaryEntity>>> GetSalesSummaryForFinancialYear(string financialYear)
         {
-            return Ok(await _profitOrLossContext.SaleSummary.Where(x => x.FinancialYear == financialYear).ToListAsync());
+            return Ok(await _salesService.GetSalesSummaryForFinancialYear(financialYear));
         }
     }
 }
