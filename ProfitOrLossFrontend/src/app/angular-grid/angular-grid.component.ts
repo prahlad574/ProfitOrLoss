@@ -6,6 +6,7 @@ import { BackendService } from '../services/backend.service';
 import { EventQueueService } from '../services/event-queue.service';
 import { Sale } from '../models/Sale';
 import { v4 as uuidv4 } from 'uuid';
+import { SaleChange } from '../models/SaleChange';
 
 @Component({
   selector: 'app-angular-grid',
@@ -89,12 +90,21 @@ export class AngularGridComponent implements OnInit {
 
   onCellValueChanged(event: CellValueChangedEvent){
     const data = event.data
-    if(event.column.getColId() !== 'shareCompany' && event.rowIndex !== null && data.sellingPrice!=null){
+    if(event.column.getColId() !== 'shareCompany' && event.rowIndex !== null && data.sellingPrice !==null && data.costPrice !== null){
       data.profitOrLoss = data.sellingPrice - data.costPrice;
       this.rowData[event.rowIndex].profitOrLoss = data.profitOrLoss;
       this.gridApi.setRowData(this.rowData);
     }
-    this.backendService.updateSale(data).subscribe({
+    let change = {
+      CostPrice: data.costPrice,
+      SellingPrice: data.sellingPrice,
+      ProfitOrLoss: data.profitOrLoss,
+      FinancialYear: data.financialYear,
+      ShareCompany: data.shareCompany,
+      SaleId: data.saleId,
+      ColumnChanged: event.column.getColId()
+    } as unknown as SaleChange
+    this.backendService.updateSale(change).subscribe({
       next: response => {
         console.log('respnse from updating sale is:' + response);
         if(event.rowIndex === this.rowData.length-1){
