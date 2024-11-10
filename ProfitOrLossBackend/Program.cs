@@ -2,6 +2,7 @@ global using ProfitOrLossBackend.Models;
 global using Microsoft.EntityFrameworkCore;
 using ProfitOrLossBackend.Services.Interfaces;
 using ProfitOrLossBackend.Services;
+using ProfitOrLossBackend.SignalR;
 var myAllowSpeificOrigin = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -24,7 +25,7 @@ builder.Services.AddDbContext<ProfitOrLossContext>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -40,5 +41,6 @@ app.UseCors(myAllowSpeificOrigin);
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<SaleHub>("/saleHub");
 
 app.Run();
