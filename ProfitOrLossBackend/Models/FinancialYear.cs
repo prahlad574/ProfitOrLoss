@@ -6,10 +6,9 @@
     public class FinancialYear
     {
         [Column("FinancialYearId")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         [Key]
-        public int FinancialYearId { get; set; }
+        public Guid FinancialYearId { get; set; }
 
         [Column("FinancialYearName")]
         [MaxLength(100)]

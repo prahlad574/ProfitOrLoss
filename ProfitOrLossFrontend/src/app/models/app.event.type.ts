@@ -1,5 +1,7 @@
 export enum AppEventType{
     ShareCompaniesLoaded = 'shareCompaniesLoadedEvent',
     BasicMetaDataLoaded = 'basicMetaDataLoaded',
-    SalesDataForSelectedFinacialYearLoaded = 'salesDataForSelectedFinacialYearLoaded'
+    SalesDataForSelectedFinacialYearLoaded = 'salesDataForSelectedFinacialYearLoaded',
+    ShareCompanyAddedOrDeleted = 'shareCompanyAddedOrDeleted',
+    FinancialYearAddedOrDeleted = 'financialYearAddedOrDeleted'
 }

@@ -14,8 +14,7 @@ namespace ProfitOrLossBackend.Migrations
                 name: "FinancialYear",
                 columns: table => new
                 {
-                    FinancialYearId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FinancialYearId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FinancialYearName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
@@ -27,8 +26,7 @@ namespace ProfitOrLossBackend.Migrations
                 name: "ShareCompany",
                 columns: table => new
                 {
-                    ShareCompanyId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShareCompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShareCompanyName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>

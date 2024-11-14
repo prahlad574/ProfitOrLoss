@@ -2,9 +2,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { BackendService } from '../services/backend.service';
+import { DataSourceService } from '../data-source.service';
 
 export interface FinancialYear{
-  financialYearId: number;
+  financialYearId: string;
   financialYearName: string;
 }
 @Component({
@@ -17,10 +18,13 @@ export class ShowFinancialYearComponent implements OnInit {
   dataSource= new MatTableDataSource<FinancialYear>();
   selection = new SelectionModel<FinancialYear>(true, []);
   errorMessage!: string;
-  constructor(private backendService: BackendService) { }
+  constructor(
+    private backendService: BackendService, 
+    private dataSourceService: DataSourceService
+  ) { }
 
   ngOnInit(): void {
-    this.backendService.getFinancialYear().subscribe(r => this.dataSource = new MatTableDataSource<FinancialYear>(r));
+    this.dataSource = new MatTableDataSource<FinancialYear>(this.dataSourceService.getFinancialYears());
     console.log(this.dataSource);
   }
     /** Whether the number of selected elements matches the total number of rows. */

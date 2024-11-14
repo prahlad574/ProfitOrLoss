@@ -1,6 +1,7 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../services/backend.service';
+import { FinancialYear } from '../show-financial-year/show-financial-year.component';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-add-financial-year',
@@ -20,7 +21,12 @@ export class AddFinancialYearComponent implements OnInit {
     this.successMessage='';
     this.errorMessage='';
 
-    this.backendService.addFinancialYear(this.financialYearName).subscribe({
+    let financialYear = {
+      financialYearName: this.financialYearName,
+      financialYearId: uuidv4(),
+    }as unknown as FinancialYear;
+    
+    this.backendService.addFinancialYear(financialYear).subscribe({
       next: response => {
          this.successMessage='Share company got added successfully';
       },
