@@ -52,7 +52,7 @@ namespace ProfitOrLossBackend.Services
             }  
 
             await _profitOrLossContext.SaveChangesAsync();
-            await PublishMessage(saleId, saleSummaryId);
+            await PublishMessage(saleId, saleSummaryId, sale.FinancialYear);
         }
 
         public async Task<List<SaleEntity>> GetSalesForFinancialYear(string financialYear)
@@ -97,7 +97,7 @@ namespace ProfitOrLossBackend.Services
 
         }
 
-        private async Task PublishMessage(Guid saleId, Guid saleSummaryId)
+        private async Task PublishMessage(Guid saleId, Guid saleSummaryId, string financialYear)
         {
             var sale = await _profitOrLossContext.Sale.FindAsync(saleId);
             var saleSummary = await _profitOrLossContext.SaleSummary.FindAsync(saleSummaryId);
@@ -107,7 +107,7 @@ namespace ProfitOrLossBackend.Services
                     Sale = sale,
                     SaleSummary = saleSummary
                 };
-                await _saleHubContext.Clients.All.SendAsync("SaleAndSummaryUpdated", message);
+                await _saleHubContext.Clients.All.SendAsync("SaleAndSummaryUpdated-" + financialYear, message);
             }
         }
     }
