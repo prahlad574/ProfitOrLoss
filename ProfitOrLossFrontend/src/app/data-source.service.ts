@@ -7,6 +7,7 @@ import { ShareCompany } from './show-share-company/show-share-company.component'
 import { FinancialYear } from './show-financial-year/show-financial-year.component';
 import { forkJoin } from 'rxjs';
 import { Sale } from './models/Sale';
+import { SignalRService } from './signal-r.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ salesForFinancialYear: Sale[]=[];
 salesSummaryForFinancialYear: Sale[]=[];
 
   constructor(private backendService: BackendService,
-    private eventQueue: EventQueueService) { }
+    private eventQueue: EventQueueService,
+    private signalRService:SignalRService) { }
 
   getAndMapBasicData = (currentFinancialYear: string) => {
     this.selectedFinancialYear= currentFinancialYear;
@@ -55,8 +57,12 @@ salesSummaryForFinancialYear: Sale[]=[];
   }
 
   updateSelectedFinancialYear(financialYear: string){
+    this.signalRService.hubConnection.off('SaleAndSummaryUpdated-'+ this.selectedFinancialYear);
     this.selectedFinancialYear = financialYear;
     this.getSalesAndSummaryForFinancialYear(this.selectedFinancialYear);
+    this.signalRService.subscribeMessage('SaleAndSummaryUpdated-'+ this.selectedFinancialYear).subscribe((message) => {
+      console.log(message);
+    })
   }
 
   getSaleData(): Sale[]{
