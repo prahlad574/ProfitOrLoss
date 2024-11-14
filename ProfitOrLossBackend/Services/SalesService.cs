@@ -1,25 +1,29 @@
-﻿using ProfitOrLossBackend.Services.Interfaces;
+﻿using Microsoft.AspNetCore.SignalR;
+using ProfitOrLossBackend.Services.Interfaces;
+using ProfitOrLossBackend.SignalR;
 
 namespace ProfitOrLossBackend.Services
 {
     public class SalesService: ISalesService
     {
         private readonly ProfitOrLossContext _profitOrLossContext;
+        private readonly IHubContext<SaleHub> _saleHubContext;
 
-        public SalesService(ProfitOrLossContext profitOrLossContext)
+        public SalesService(ProfitOrLossContext profitOrLossContext, IHubContext<SaleHub> saleHubContext)
         {
             _profitOrLossContext = profitOrLossContext;
+            _saleHubContext = saleHubContext;
         }
 
-        public void UpdateSale(SaleChange sale) 
+        public async Task UpdateSale(SaleChange sale) 
         {
-
             var saleId = sale.SaleId != null ? Guid.Parse(sale.SaleId) : Guid.NewGuid();
-            var saleFromDb =  _profitOrLossContext.Sale.Find(saleId);
-            var saleSummaryFromDb =  _profitOrLossContext.SaleSummary.FirstOrDefault(x => x.FinancialYear == sale.FinancialYear && x.ShareCompany == sale.ShareCompany);
+            var saleFromDb =  await _profitOrLossContext.Sale.FindAsync(saleId);
+            var saleSummaryFromDb =  await _profitOrLossContext.SaleSummary.FirstOrDefaultAsync(x => x.FinancialYear == sale.FinancialYear && x.ShareCompany == sale.ShareCompany);
+            var saleSummaryId = saleSummaryFromDb != null ? saleSummaryFromDb.SaleSummaryId: Guid.NewGuid();
             if (saleFromDb == null)
             {
-                _profitOrLossContext.AddRange(new SaleEntity
+                await _profitOrLossContext.AddRangeAsync(new SaleEntity
                 {
                     SaleId = saleId,
                     CostPrice = sale.CostPrice,
@@ -40,15 +44,15 @@ namespace ProfitOrLossBackend.Services
 
             if(saleSummaryFromDb != null)
             {
-                UpdateSaleSummary(sale, saleSummaryFromDb);
+                await UpdateSaleSummary(sale, saleSummaryFromDb);
             }
             else
             {
-                CreateSaleSummary(sale);
+                await CreateSaleSummary(sale, saleSummaryId);
             }  
 
-             _profitOrLossContext.SaveChanges();
-            
+            await _profitOrLossContext.SaveChangesAsync();
+            await PublishMessage(saleId, saleSummaryId);
         }
 
         public async Task<List<SaleEntity>> GetSalesForFinancialYear(string financialYear)
@@ -61,24 +65,24 @@ namespace ProfitOrLossBackend.Services
             return await _profitOrLossContext.SaleSummary.Where(x => x.FinancialYear == financialYear).ToListAsync();
         }
 
-        private void CreateSaleSummary(SaleChange sale) 
+        private async Task CreateSaleSummary(SaleChange sale, Guid saleSummaryId) 
         {
             var saleSummary = new SaleSummaryEntity
             {
-                SaleSummaryId = Guid.NewGuid(),
+                SaleSummaryId = saleSummaryId,
                 CostPrice = sale.CostPrice,
                 SellingPrice = sale.SellingPrice,
                 FinancialYear = sale.FinancialYear,
                 ProfitOrLoss = sale.ProfitOrLoss,
                 ShareCompany = sale.ShareCompany,
             };
-            _profitOrLossContext.AddRange(saleSummary);
-        
+            await _profitOrLossContext.AddRangeAsync(saleSummary);
+            
         }
 
-        private void UpdateSaleSummary(SaleChange sale, SaleSummaryEntity saleSummaryFromDb) 
+        private  async Task UpdateSaleSummary(SaleChange sale, SaleSummaryEntity saleSummaryFromDb) 
         {
-            var sales = _profitOrLossContext.Sale.Where(x => x.FinancialYear == sale.FinancialYear && x.ShareCompany == sale.ShareCompany).ToList();
+            var sales = await _profitOrLossContext.Sale.Where(x => x.FinancialYear == sale.FinancialYear && x.ShareCompany == sale.ShareCompany).ToListAsync();
             switch (sale.ColumnChanged)
             {
             case "costPrice":
@@ -89,10 +93,22 @@ namespace ProfitOrLossBackend.Services
                     saleSummaryFromDb.SellingPrice = sales.Sum(x => x.SellingPrice);
                     saleSummaryFromDb.ProfitOrLoss = sales.Sum(x => x.ProfitOrLoss);
                     break;
-
             }
+
         }
 
-       
+        private async Task PublishMessage(Guid saleId, Guid saleSummaryId)
+        {
+            var sale = await _profitOrLossContext.Sale.FindAsync(saleId);
+            var saleSummary = await _profitOrLossContext.SaleSummary.FindAsync(saleSummaryId);
+            if(sale != null && saleSummary != null) {
+                var message = new SaleOrSummaryChange
+                {
+                    Sale = sale,
+                    SaleSummary = saleSummary
+                };
+                await _saleHubContext.Clients.All.SendAsync("SaleAndSummaryUpdated", message);
+            }
+        }
     }
 }

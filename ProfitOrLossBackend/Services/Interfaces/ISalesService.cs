@@ -2,7 +2,7 @@
 {
     public interface ISalesService
     {
-        void UpdateSale(SaleChange sale);
+        Task UpdateSale(SaleChange sale);
 
         Task<List<SaleEntity>> GetSalesForFinancialYear(string financialYear);
 
