@@ -86,4 +86,39 @@ salesSummaryForFinancialYear: Sale[]=[];
       }
     });
   }
+
+  addMetaData(message: any){
+    switch (message.metadataType){
+    case 0:
+      this.financialYears= this.financialYears.concat({
+        financialYearId: message.id,
+        financialYearName: message.name
+      } as unknown as FinancialYear);
+      this.eventQueue.dispatch(new AppEvent(AppEventType.FinancialYearAddedOrDeleted,''));
+      break;
+
+    case 1:
+      this.shareCompanyNames= this.shareCompanyNames.concat({
+        shareCompanyId: message.id,
+        shareCompanyName: message.name
+      }as unknown as ShareCompany);
+      this.eventQueue.dispatch(new AppEvent(AppEventType.ShareCompanyAddedOrDeleted,''));
+      break;
+    }
+  }
+
+  deleteMetaData(message: any){
+    switch (message.metadataType){
+      case 0:
+        this.financialYears= this.financialYears.filter(x => x.financialYearId !== message.id);
+        this.eventQueue.dispatch(new AppEvent(AppEventType.FinancialYearAddedOrDeleted,''));
+        break;
+  
+      case 1:
+        this.shareCompanyNames= this.shareCompanyNames.filter(x => x.shareCompanyId !== message.id);
+        this.eventQueue.dispatch(new AppEvent(AppEventType.ShareCompanyAddedOrDeleted,''));
+        break;
+      }
+  }
+
 }

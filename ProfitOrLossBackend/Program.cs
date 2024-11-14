@@ -16,6 +16,7 @@ builder.Services.AddCors(options =>
 });
 // Add services to the container.
 builder.Services.AddScoped<ISalesService, SalesService>();
+builder.Services.AddScoped<IMetaDataService, MetadataService>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ProfitOrLossContext>(options =>

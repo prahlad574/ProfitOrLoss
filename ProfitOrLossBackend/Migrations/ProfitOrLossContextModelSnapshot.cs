@@ -24,12 +24,10 @@ namespace ProfitOrLossBackend.Migrations
 
             modelBuilder.Entity("ProfitOrLossBackend.Models.FinancialYear", b =>
                 {
-                    b.Property<int>("FinancialYearId")
+                    b.Property<Guid>("FinancialYearId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("FinancialYearId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FinancialYearId"));
 
                     b.Property<string>("FinancialYearName")
                         .HasMaxLength(100)
@@ -111,12 +109,10 @@ namespace ProfitOrLossBackend.Migrations
 
             modelBuilder.Entity("ProfitOrLossBackend.Models.ShareCompany", b =>
                 {
-                    b.Property<int>("ShareCompanyId")
+                    b.Property<Guid>("ShareCompanyId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("ShareCompanyId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShareCompanyId"));
 
                     b.Property<string>("ShareCompanyName")
                         .HasMaxLength(100)

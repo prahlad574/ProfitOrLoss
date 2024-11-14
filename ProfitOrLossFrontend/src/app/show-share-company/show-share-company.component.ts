@@ -5,7 +5,7 @@ import { BackendService } from '../services/backend.service';
 import { DataSourceService } from '../data-source.service';
 
 export interface ShareCompany{
-  shareCompanyId: number;
+  shareCompanyId: string;
   shareCompanyName: string;
 }
 @Component({

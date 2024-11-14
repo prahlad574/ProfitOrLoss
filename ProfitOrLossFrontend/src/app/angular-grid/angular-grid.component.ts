@@ -26,6 +26,7 @@ export class AngularGridComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventQueue.On(AppEventType.BasicMetaDataLoaded).subscribe(event => this.buildDefinitions())
+    this.eventQueue.On(AppEventType.ShareCompanyAddedOrDeleted).subscribe(event => this.buildDefinitions())
     this.eventQueue.On(AppEventType.SalesDataForSelectedFinacialYearLoaded).subscribe(event=> {
       this.selectedButton = 'SaleTransaction';
       this.columnDefs= this.buildColumnDefinitions();

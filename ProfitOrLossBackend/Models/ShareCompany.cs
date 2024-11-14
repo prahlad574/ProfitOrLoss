@@ -6,10 +6,9 @@
     public class ShareCompany
     {
         [Column("ShareCompanyId")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         [Key]
-        public int ShareCompanyId { get; set; }
+        public Guid ShareCompanyId { get; set; }
 
         [Column("ShareCompanyName")]
         [MaxLength(100)]
