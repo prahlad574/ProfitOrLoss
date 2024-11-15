@@ -16,9 +16,9 @@ namespace ProfitOrLossBackend.Controllers
 
         [HttpPost]
         [Route("/UpdateSale")]
-        public ActionResult<SaleSummaryEntity> UpdateSale([FromBody] SaleChange saleChange)
+        public async Task<ActionResult> UpdateSale([FromBody] SaleChange saleChange)
         {
-            _salesService.UpdateSale(saleChange);
+           await _salesService.UpdateSale(saleChange);
             return Ok();
         }
 
