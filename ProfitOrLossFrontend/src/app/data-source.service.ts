@@ -61,8 +61,27 @@ salesSummaryForFinancialYear: Sale[]=[];
     this.selectedFinancialYear = financialYear;
     this.getSalesAndSummaryForFinancialYear(this.selectedFinancialYear);
     this.signalRService.subscribeMessage('SaleAndSummaryUpdated-'+ this.selectedFinancialYear).subscribe((message) => {
-      console.log(message);
+      this.updateSaleAndSummaryData(message);
     })
+  }
+
+  updateSaleAndSummaryData(message: any){
+    this.updateSaleData(message.saleId);
+    this.updateSalesSummaryData(message.saleSummary);
+  }
+
+  updateSaleData(sale: any){
+    if(this.salesForFinancialYear.includes(sale.saleId)){
+      this.salesForFinancialYear = this.salesForFinancialYear.filter(x => x.saleId !== sale.saleId);
+    }
+    this.salesForFinancialYear = this.salesForFinancialYear.concat(sale);
+  }
+
+  updateSalesSummaryData(saleSummary: any){
+    if(this.salesSummaryForFinancialYear.includes(saleSummary.saleSummaryId)){
+      this.salesSummaryForFinancialYear = this.salesSummaryForFinancialYear.filter(x => x.saleId !== saleSummary.saleSummaryId);
+    }
+    this.salesSummaryForFinancialYear = this.salesSummaryForFinancialYear.concat(saleSummary);
   }
 
   getSaleData(): Sale[]{

@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
     })
 
     this.signalRService.subscribeMessage('SaleAndSummaryUpdated-'+ this.currentFinacialYear).subscribe((message) => {
-      console.log(message)
+      this.datasource.updateSaleAndSummaryData(message);
     });
   }
   
