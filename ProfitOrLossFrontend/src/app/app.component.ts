@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { AddFinancialYearComponent } from './add-financial-year/add-financial-year.component';
 import { AddShareCompanyComponent } from './add-share-company/add-share-company.component';
@@ -10,13 +10,14 @@ import { AppEventType } from './models/app.event.type';
 import { SignalRService } from './signal-r.service';
 import { SignalRDataSourceService } from './services/signal-rdata-source.service';
 import { map } from 'rxjs';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   financialYears: FinancialYear[]=[];
   currentFinacialYear: string='';
 
@@ -26,27 +27,30 @@ export class AppComponent implements OnInit {
     private eventQueue: EventQueueService, 
     private signalRService: SignalRService,
     private signalRDataSource: SignalRDataSourceService) {}
+  
   ngOnInit(): void {
     this.signalRService.startConnection();
     this.signalRService.subscribeMessage('AddOrDeleteMetadata').subscribe((message) => {
       this.signalRDataSource.addOrDeleteMetadata(message);
     });
+  
     this.currentFinacialYear = this.getCurrentFinancialYear()
     this.datasource.getAndMapBasicData(this.currentFinacialYear);
+
     this.eventQueue.On(AppEventType.BasicMetaDataLoaded).subscribe(event => {
       this.loadFinancialYears();
     })
     this.eventQueue.On(AppEventType.FinancialYearAddedOrDeleted).subscribe(event => {
       this.loadFinancialYears();
     })
+
+    this.signalRService.subscribeMessage('SaleAndSummaryUpdated-'+ this.currentFinacialYear).subscribe((message) => {
+      this.datasource.updateSaleAndSummaryData(message);
+    });
   }
   
   loadFinancialYears() {
     this.financialYears = this.datasource.getFinancialYears();
-    if(this.financialYears.length > 0 ) {
-      this.currentFinacialYear = this.getCurrentFinancialYear();
-      this.currentFinacialYear= this.financialYears.map(x => x.financialYearName).includes(this.currentFinacialYear) ? this.currentFinacialYear : this.financialYears[0].financialYearName;
-    }
   }
   getCurrentFinancialYear(): string {
     let currentDate = new Date();
@@ -64,5 +68,10 @@ export class AppComponent implements OnInit {
   }
   openShowShareCompanyDialog(){
     const dialogRef = this.dialog.open(ShowShareCompanyComponent, {restoreFocus: false});
+  }
+
+  ngOnDestroy(): void {
+    this.signalRService.hubConnection.off('AddOrDeleteMetadata');
+    this.signalRService.hubConnection.off('SaleAndSummaryUpdated-'+ this.currentFinacialYear);
   }
 }
