@@ -51,10 +51,6 @@ export class AppComponent implements OnInit, OnDestroy {
   
   loadFinancialYears() {
     this.financialYears = this.datasource.getFinancialYears();
-    if(this.financialYears.length > 0 ) {
-      this.currentFinacialYear = this.getCurrentFinancialYear();
-      this.currentFinacialYear= this.financialYears.map(x => x.financialYearName).includes(this.currentFinacialYear) ? this.currentFinacialYear : this.financialYears[0].financialYearName;
-    }
   }
   getCurrentFinancialYear(): string {
     let currentDate = new Date();
