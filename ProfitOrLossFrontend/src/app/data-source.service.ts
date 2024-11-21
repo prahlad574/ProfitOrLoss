@@ -8,6 +8,7 @@ import { FinancialYear } from './show-financial-year/show-financial-year.compone
 import { forkJoin } from 'rxjs';
 import { Sale } from './models/Sale';
 import { SignalRService } from './signal-r.service';
+import { SaleSummary } from './models/SaleSummary';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ shareCompanyNames: ShareCompany[] = [];
 financialYears: FinancialYear[] = [];
 selectedFinancialYear: string= '';
 salesForFinancialYear: Sale[]=[];
-salesSummaryForFinancialYear: Sale[]=[];
+salesSummaryForFinancialYear: SaleSummary[]=[];
 
   constructor(private backendService: BackendService,
     private eventQueue: EventQueueService,
@@ -66,20 +67,20 @@ salesSummaryForFinancialYear: Sale[]=[];
   }
 
   updateSaleAndSummaryData(message: any){
-    this.updateSaleData(message.saleId);
+    this.updateSaleData(message.sale);
     this.updateSalesSummaryData(message.saleSummary);
   }
 
   updateSaleData(sale: any){
-    if(this.salesForFinancialYear.includes(sale.saleId)){
+    if(this.salesForFinancialYear.map(x => x.saleId).includes(sale.saleId)){
       this.salesForFinancialYear = this.salesForFinancialYear.filter(x => x.saleId !== sale.saleId);
     }
     this.salesForFinancialYear = this.salesForFinancialYear.concat(sale);
   }
 
   updateSalesSummaryData(saleSummary: any){
-    if(this.salesSummaryForFinancialYear.includes(saleSummary.saleSummaryId)){
-      this.salesSummaryForFinancialYear = this.salesSummaryForFinancialYear.filter(x => x.saleId !== saleSummary.saleSummaryId);
+    if(this.salesSummaryForFinancialYear.map(x => x.saleSummaryId).includes(saleSummary.saleSummaryId)){
+      this.salesSummaryForFinancialYear = this.salesSummaryForFinancialYear.filter(x => x.saleSummaryId !== saleSummary.saleSummaryId);
     }
     this.salesSummaryForFinancialYear = this.salesSummaryForFinancialYear.concat(saleSummary);
   }
@@ -88,7 +89,7 @@ salesSummaryForFinancialYear: Sale[]=[];
     return this.salesForFinancialYear;
   }
 
-  getSalesSummaryData():Sale[]{
+  getSalesSummaryData():SaleSummary[]{
     return this.salesSummaryForFinancialYear;
   }
 
